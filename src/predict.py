@@ -11,7 +11,7 @@ def generate_predictions(pipeline, X_blind: pd.DataFrame) -> np.ndarray:
 
 def save_predictions(predictions: np.ndarray) -> str:
     OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
-    path = OUTPUTS_DIR / "predictions.csv"
+    path = OUTPUTS_DIR / "target_pred.csv"
     pd.DataFrame({"target_pred": predictions}).to_csv(path, index=False)
     print(f"Predictions saved to {path}")
     return str(path)

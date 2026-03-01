@@ -21,7 +21,7 @@ uv run python main.py
 3. **Train 7 models** — each wrapped in a `sklearn.Pipeline` (StandardScaler + estimator) with `RandomizedSearchCV` hyperparameter tuning (50 iterations, 5-fold CV)
 4. **Compare** — rank models by CV MAE
 5. **Evaluate** — hold-out set metrics (MAE, RMSE, R²)
-6. **Predict** — generate blind test predictions → `outputs/predictions.csv`
+6. **Predict** — generate blind test predictions → `outputs/target_pred.csv`
 7. **Save** — serialize best pipeline → `models/best_model_<name>.joblib`
 
 All experiments are tracked with **MLflow** (local tracking under `mlruns/`).
@@ -53,7 +53,7 @@ data/
   training_data.csv     # 800 rows × 21 cols (features + target)
   blind_test_data.csv   # 200 rows × 20 cols (features only)
 models/                 # Serialized sklearn.Pipeline (joblib)
-outputs/                # predictions.csv (200 rows, target_pred column)
+outputs/                # target_pred.csv (200 rows, target_pred column)
 notebooks/
   data_analisys.ipynb   # Exploratory data analysis
 mlruns/                 # MLflow experiment tracking
