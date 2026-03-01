@@ -9,3 +9,8 @@ wheels/
 # Virtual environments
 .venv
 *:Zone.Identifier
+CLAUDE.md
+/.agent
+/.agents
+/.claude
+skills-lock.json
