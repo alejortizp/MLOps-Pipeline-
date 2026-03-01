@@ -3,6 +3,8 @@ import time
 import mlflow
 import numpy as np
 from sklearn.model_selection import RandomizedSearchCV, cross_val_score
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
 
 from src.config import (
     CV_FOLDS,
@@ -31,11 +33,16 @@ def train_single_model(
     print(f"Training: {name}")
     print(f"{'='*60}")
 
+    pipeline = Pipeline([
+        ("scaler", StandardScaler()),
+        ("model", estimator),
+    ])
+
     with mlflow.start_run(run_name=name):
         start = time.time()
 
         search = RandomizedSearchCV(
-            estimator=estimator,
+            estimator=pipeline,
             param_distributions=params,
             n_iter=N_ITER,
             cv=CV_FOLDS,
@@ -47,17 +54,17 @@ def train_single_model(
         search.fit(X, y)
         elapsed = time.time() - start
 
-        best = search.best_estimator_
+        best_pipeline = search.best_estimator_
 
-        # Additional CV scores with the best estimator
+        # Additional CV scores with the best pipeline
         mae_scores = cross_val_score(
-            best, X, y, cv=CV_FOLDS, scoring="neg_mean_absolute_error"
+            best_pipeline, X, y, cv=CV_FOLDS, scoring="neg_mean_absolute_error"
         )
         r2_scores = cross_val_score(
-            best, X, y, cv=CV_FOLDS, scoring="r2"
+            best_pipeline, X, y, cv=CV_FOLDS, scoring="r2"
         )
         rmse_scores = cross_val_score(
-            best, X, y, cv=CV_FOLDS, scoring="neg_root_mean_squared_error"
+            best_pipeline, X, y, cv=CV_FOLDS, scoring="neg_root_mean_squared_error"
         )
 
         metrics = {
@@ -73,7 +80,7 @@ def train_single_model(
         # Log to MLflow
         mlflow.log_params(search.best_params_)
         mlflow.log_metrics(metrics)
-        mlflow.sklearn.log_model(best, artifact_path="model")
+        mlflow.sklearn.log_model(best_pipeline, artifact_path="model")
 
         print(f"  Best CV MAE:  {metrics['cv_mae_mean']:.4f} +/- {metrics['cv_mae_std']:.4f}")
         print(f"  Best CV R²:   {metrics['cv_r2_mean']:.4f} +/- {metrics['cv_r2_std']:.4f}")
@@ -82,7 +89,7 @@ def train_single_model(
 
     return {
         "name": name,
-        "estimator": best,
+        "pipeline": best_pipeline,
         "best_params": search.best_params_,
         "metrics": metrics,
     }
