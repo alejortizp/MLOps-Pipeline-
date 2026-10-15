@@ -8,7 +8,6 @@ wheels/
 
 # Virtual environments
 .venv
-*:Zone.Identifier
 CLAUDE.md
 /.agent
 /.agents
@@ -17,3 +16,9 @@ skills-lock.json
 
 # MLflow
 mlruns/
+
+# Original challenge materials and OS metadata (kept locally, not versioned)
+*.pdf
+*.tar.gz
+*:Zone.Identifier
+._*

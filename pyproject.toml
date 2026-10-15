@@ -1,7 +1,7 @@
 [project]
 name = "mlops-pipeline"
 version = "0.1.0"
-description = "Add your description here"
+description = "Reproducible regression pipeline benchmarking 7 models with RandomizedSearchCV and MLflow tracking"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [

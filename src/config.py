@@ -23,7 +23,7 @@ CV_FOLDS = 5         # Numero de folds en validacion cruzada
 N_ITER = 50          # Iteraciones de busqueda aleatoria de hiperparametros
 
 # --- MLflow ---
-MLFLOW_EXPERIMENT_NAME = "mlops-pipeline-regression"               # Nombre del experimento
+MLFLOW_EXPERIMENT_NAME = "regression-benchmark"               # Nombre del experimento
 MLFLOW_TRACKING_URI = (PROJECT_ROOT / "mlruns").as_uri()     # URI local de tracking
 
 # --- Metrica de evaluacion ---
